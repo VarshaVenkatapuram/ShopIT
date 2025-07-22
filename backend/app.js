@@ -33,7 +33,10 @@ process.on('uncaughtException',(err)=>
 
 
 // Load environment variables using absolute path
+if(process.env.NODE_ENV!=="PRODUCTION")
+{
 config({ path: path.join(__dirname, 'config', 'config.env') });
+}
 
 
 connectDatabase();
