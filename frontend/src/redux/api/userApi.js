@@ -14,19 +14,25 @@ export const userApi = createApi({
     getMe: builder.query({
       query: () => "/me",
       transformResponse: (response) => response.user,
-      async onQueryStarted(args,{dispatch,queryFulfilled})
-      {
-        try{
-          const {data}=await queryFulfilled;
-          dispatch(setUser(data));
-          dispatch(setIsAuthenticated(true));
-          dispatch(setLoading(false))
-        }
-        catch(error){
-          dispatch(setLoading(false));
-          console.log(error);
-        }
-      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+  try {
+    const { data } = await queryFulfilled;
+
+    if (data && data._id) { // or any other reliable field
+      dispatch(setUser(data));
+      dispatch(setIsAuthenticated(true));
+    } else {
+      dispatch(setIsAuthenticated(false));
+    }
+
+    dispatch(setLoading(false));
+  } catch (error) {
+    dispatch(setIsAuthenticated(false));
+    dispatch(setLoading(false));
+    console.log(error);
+  }
+},
+
       providesTags:["User"],
 
     }),

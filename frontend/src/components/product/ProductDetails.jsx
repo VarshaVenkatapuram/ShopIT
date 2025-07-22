@@ -9,6 +9,7 @@ import { setCartItem } from "../../redux/features/cartSlice.js";
 import NewReview from "../reviews/NewReview.jsx";
 import MetaData from "../MetaData.jsx";
 import ListReviews from "../reviews/ListReviews.jsx";
+import NotFound from "../NotFound.jsx";
 const ProductDetails = () => {
   const [activeImg, setActiveImg] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -61,6 +62,11 @@ const ProductDetails = () => {
   };
 
   if (isLoading) return <Loader />;
+
+  if(error && error?.status==400)
+  {
+    return <NotFound/>
+  }
 
   return (
     <>
